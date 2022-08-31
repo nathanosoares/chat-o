@@ -4,6 +4,8 @@ import {
   ShakeScreenClientBoundPacket,
 } from "@chat-o/common";
 import { Socket } from "net";
+import Mask from "./net/mask";
+import Opcode from "./net/opcode";
 import ServerBufferInput from "./protocol/server-buffer-input";
 
 const packets = new Map<number, { new (arg: string): ClientBoundPacket }>([
@@ -22,13 +24,13 @@ export function socketListener(connectionUid: string, socket: Socket) {
   const _rsv3 = firstByteData[3];
   const opcode = parseInt(firstByteData.substring(4), 2);
 
-  if (opcode != 0x02) return;
+  if (opcode != Opcode.BINARY_FRAME) return;
 
   const secondByte = socket.read(1);
   const secondByteData = secondByte[0].toString(2).padStart(8, "0");
   const mask = secondByteData[0];
 
-  if (mask != 0x01) return;
+  if (mask != Mask.MASKED) return;
 
   const dataLength = parseInt(secondByteData.substring(1), 2);
 
