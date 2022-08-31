@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "target/index.js",
   "scripts": {
-    "start": "nodemon --watch 'src/**' --ext 'ts,html' --ignore 'src/**/*.spec.ts' --exec 'ts-node src/index'",
+    "start": "nodemon --watch 'src/**' --watch '../common/src/**' --ext 'ts,html' --ignore 'src/**/*.spec.ts' --exec 'npm --prefix ../../ run compile && ts-node src/index'",
     "compile": "tsc"
   },
   "dependencies": {
