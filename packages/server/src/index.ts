@@ -4,13 +4,16 @@ import { Socket } from "net";
 import { startServer, upgradeConnectionHandle } from "./server";
 import { socketListener } from "./socket-listener";
 
-const server = startServer();
+const server = startServer(8080);
 
 server.on("upgrade", (req: IncomingMessage, socket: Socket) => {
   upgradeConnectionHandle(req, socket);
 
+  const connectionUid = randomUUID();
+
+  console.log(`Client ${connectionUid} connected`);
+
   socket.on("readable", () => {
-    const connectionUid = randomUUID();
     socketListener(connectionUid, socket);
     socket.read();
   });
