@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <script>
+      const utf8Encode = new TextEncoder();
+      const socket = new WebSocket(`ws://${document.location.host}`);
+
+      socket.onopen = (event) => {
+        console.log("Connected!", event);
+      };
+
+      socket.onmessage = (message) => {
+        console.log("message", message);
+      };
+
+      socket.onerror = (error) => console.error(`Error`, error);
+      socket.onclose = (event) => console.log("Disconnected!");
+
+      function createUint8ArrayFromString(string) {
+        const buffer = utf8Encode.encode(string).buffer;
+        return new Uint8Array(buffer);
+      }
+
+      function concatArray(first, second) {
+        const buffer = new ArrayBuffer(first.length + second.length);
+        const array = new Uint8Array(buffer);
+
+        var pos = 0;
+        for (let i = 0; i < array.length; i++) {
+          array[i] =
+            pos < first.length ? first[pos++] : second[pos++ - first.length];
+        }
+
+        return [buffer, array];
+      }
+
+      // reference: https://stackoverflow.com/a/45289808
+      function toBinary(value) {
+        if (!Number.isSafeInteger(value)) {
+          throw new TypeError("value must be a safe integer");
+        }
+
+        const negative = value < 0;
+        const twosComplement = negative
+          ? Number.MAX_SAFE_INTEGER + value + 1
+          : value;
+        const signExtend = negative ? "1" : "0";
+
+        return twosComplement
+          .toString(2)
+          .padStart(53, "0")
+          .padStart(64, signExtend);
+      }
+
+      function sendMessage(targetUid, message) {
+        const targetUidArray = createUint8ArrayFromString(targetUid);
+        const targetUidLenghtArray = createUint8ArrayFromString(
+          toBinary(targetUidArray.length)
+        );
+
+        const messageArray = createUint8ArrayFromString(message);
+        const messageLenghtArray = createUint8ArrayFromString(
+          toBinary(messageArray.length)
+        );
+
+        const [, a] = concatArray(targetUidLenghtArray, targetUidArray);
+
+        const [, b] = concatArray(a, messageLenghtArray);
+        const [, c] = concatArray(b, messageArray);
+
+        const [buffer, d] = concatArray(new Uint8Array([0x01]), c);
+
+        socket.send(buffer);
+      }
+
+      function shakeScreen(targetUid) {
+        const targetUidArray = createUint8ArrayFromString(targetUid);
+
+        const [buffer] = concatArray(new Uint8Array([0x02]), targetUidArray);
+
+        socket.send(buffer);
+      }
+
+      function handleSendMessageClick() {
+        sendMessage(
+          "a5aea9b66-d05b-413e-af40-192c7a73434",
+          document.getElementById("textbox").value
+        );
+      }
+
+      function handleShakeScreenClick() {
+        shakeScreen("a5aea9b66-d05b-413e-af40-192c7a73434");
+      }
+    </script>
+
+    <textarea id="textbox" cols="30" rows="10"></textarea>
+    <button onclick="handleSendMessageClick()" class="send-button">
+      Enviar 📨
+    </button>
+    <button onclick="handleShakeScreenClick()" class="send-button">
+      Chamar atenção
+    </button>
+  </body>
+</html>

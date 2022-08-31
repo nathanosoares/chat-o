@@ -1,13 +1,17 @@
 import { Socket } from "net";
 import { createServer, IncomingMessage, ServerResponse, Server } from "http";
 import { createHash } from "crypto";
+import { readFileSync } from "fs";
 
 const WEBSOCKET_MAGIC_STRING_KEY = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+
+const html = readFileSync("./src/index.html");
 
 export function startServer(port: number = 25665): Server {
   const server = createServer(
     (_request: IncomingMessage, response: ServerResponse) => {
       response.writeHead(200, { "Content-Type": "text/html" });
+      response.write(html);
       response.end();
     }
   );
@@ -17,8 +21,8 @@ export function startServer(port: number = 25665): Server {
   return server;
 }
 
-export function upgradeConnectionHandle(req: IncomingMessage, socket: Socket) {
-  const { "sec-websocket-key": webClientSocketKey } = req.headers;
+export function upgradeConnectionHandle(request: IncomingMessage, socket: Socket) {
+  const { "sec-websocket-key": webClientSocketKey } = request.headers;
 
   const sha1 = createHash("sha1");
   sha1.update(webClientSocketKey + WEBSOCKET_MAGIC_STRING_KEY);
