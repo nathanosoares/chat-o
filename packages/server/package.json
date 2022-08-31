@@ -1,0 +1,14 @@
+{
+  "name": "@chat-o/server",
+  "version": "1.0.0",
+  "main": "target/index.js",
+  "scripts": {
+    "start": "nodemon --watch 'src/**' --ext 'ts,html' --ignore 'src/**/*.spec.ts' --exec 'ts-node src/index'",
+    "compile": "tsc"
+  },
+  "dependencies": {
+    "@chat-o/common": "^1.0.0",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
+  }
+}
