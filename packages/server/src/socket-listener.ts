@@ -6,7 +6,7 @@ import {
 import { Socket } from "net";
 import Mask from "./net/mask";
 import Opcode from "./net/opcode";
-import ServerBufferInput from "./protocol/server-buffer-input";
+import ServerBufferInput from "./net/protocol/server-buffer-input";
 
 const packets = new Map<number, { new (arg: string): ClientBoundPacket }>([
   [0x01, SendMessageClientBoundPacket],

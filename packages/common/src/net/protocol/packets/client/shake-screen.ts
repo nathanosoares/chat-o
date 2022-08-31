@@ -1,5 +1,5 @@
-import { BufferOutput } from "../../buffer-output";
-import { BufferInput } from "../../buffer-input";
+import { BufferOutput } from "../../../buffer-output";
+import { BufferInput } from "../../../buffer-input";
 import { ClientBoundPacket } from "../client-bound-packet";
 
 export class ShakeScreenClientBoundPacket extends ClientBoundPacket {
