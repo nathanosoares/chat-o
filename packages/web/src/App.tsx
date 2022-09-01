@@ -1,12 +1,12 @@
 import { SendMessageClientBoundPacket } from "@chat-o/common";
 import { BufferStream } from "buffer-stream-js";
-import { Component, onMount } from "solid-js";
+import { Component } from "solid-js";
 
 const socket = new WebSocket(`ws://localhost:8080/`);
 
 socket.onopen = (event) => console.log("Connected!", event);
 socket.onmessage = (message) => console.log("message", message);
-socket.onerror = (error) => console.error(`Error`, error);
+socket.onerror = (error) => console.error("Error", error);
 socket.onclose = (event) => console.log("Disconnected!", event);
 
 function handleSendMessageClick() {
