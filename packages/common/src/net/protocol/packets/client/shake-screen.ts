@@ -1,21 +1,20 @@
-import { BufferOutput } from "../../../buffer-output";
-import { BufferInput } from "../../../buffer-input";
 import { ClientBoundPacket } from "../client-bound-packet";
+import { BufferStream } from "buffer-stream-js";
 
 export class ShakeScreenClientBoundPacket extends ClientBoundPacket {
   private _targetUid: string = "";
 
-  constructor(readonly clientId: string, targetId?: string) {
-    super(clientId);
+  constructor(targetId?: string) {
+    super();
 
     this._targetUid = targetId || "";
   }
 
-  read(buffer: BufferInput): void {
-    this._targetUid = buffer.readString() || "";
+  read(buffer: BufferStream): void {
+    this._targetUid = buffer.readUtf8String(36);
   }
 
-  write(buffer: BufferOutput): void {
-    buffer.writeString(this._targetUid);
+  write(buffer: BufferStream): void {
+    buffer.writeUtf8String(this._targetUid);
   }
 }

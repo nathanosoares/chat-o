@@ -7,7 +7,9 @@
     "compile": "tsc"
   },
   "dependencies": {
-    "@chat-o/common": "^1.0.0",
+    "@chat-o/common": "^1.0.0"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.19",
     "ts-node": "^10.9.1"
   }

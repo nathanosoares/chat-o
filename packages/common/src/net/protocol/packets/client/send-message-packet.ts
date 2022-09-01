@@ -1,14 +1,12 @@
-
-import { BufferInput } from "../../../buffer-input";
-import { BufferOutput } from "../../../buffer-output";
+import { BufferStream } from "buffer-stream-js";
 import { ClientBoundPacket } from "../client-bound-packet";
 
 export class SendMessageClientBoundPacket extends ClientBoundPacket {
   private _targetUid: string = "";
   private _text: string = "";
 
-  constructor(readonly clientId: string, targetUid?: string, text?: string) {
-    super(clientId);
+  constructor(targetUid?: string, text?: string) {
+    super();
 
     this._targetUid = targetUid || "";
     this._text = text || "";
@@ -22,13 +20,13 @@ export class SendMessageClientBoundPacket extends ClientBoundPacket {
     return this._text;
   }
 
-  read(buffer: BufferInput): void {
-    this._targetUid = buffer.readString() || "";
-    this._text = buffer.readString() || "";
+  read(buffer: BufferStream): void {
+    this._targetUid = buffer.readPackedUtf8String();
+    this._text = buffer.readPackedUtf8String();
   }
 
-  write(buffer: BufferOutput): void {
-    buffer.writeString(this._targetUid);
-    buffer.writeString(this._text);
+  write(buffer: BufferStream): void {
+    buffer.writePackedUtf8String(this._targetUid);
+    buffer.writePackedUtf8String(this._text);
   }
 }

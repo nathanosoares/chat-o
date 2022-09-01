@@ -1,8 +1,7 @@
-import { BufferOutput } from "../buffer-output";
-import { BufferInput } from "../buffer-input";
+import { BufferStream } from "buffer-stream-js";
 
 export abstract class Packet {
-  abstract read(buffer: BufferInput): void;
+  abstract read(buffer: BufferStream): void;
 
-  abstract write(buffer: BufferOutput): void;
+  abstract write(buffer: BufferStream): void;
 }

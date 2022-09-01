@@ -11,14 +11,8 @@
       const utf8Encode = new TextEncoder();
       const socket = new WebSocket(`ws://${document.location.host}`);
 
-      socket.onopen = (event) => {
-        console.log("Connected!", event);
-      };
-
-      socket.onmessage = (message) => {
-        console.log("message", message);
-      };
-
+      socket.onopen = (event) => console.log("Connected!", event);
+      socket.onmessage = (message) => console.log("message", message);
       socket.onerror = (error) => console.error(`Error`, error);
       socket.onclose = (event) => console.log("Disconnected!");
 

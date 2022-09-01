@@ -3,12 +3,12 @@ import {
   SendMessageClientBoundPacket,
   ShakeScreenClientBoundPacket,
 } from "@chat-o/common";
+import { BufferStream } from "buffer-stream-js";
 import { Socket } from "net";
 import Mask from "./net/mask";
 import Opcode from "./net/opcode";
-import ServerBufferInput from "./net/protocol/server-buffer-input";
 
-const packets = new Map<number, { new (arg: string): ClientBoundPacket }>([
+const packets = new Map<number, { new (): ClientBoundPacket }>([
   [0x01, SendMessageClientBoundPacket],
   [0x02, ShakeScreenClientBoundPacket],
 ]);
@@ -51,7 +51,7 @@ export function socketListener(connectionUid: string, socket: Socket) {
 
   if (!packetClass) return;
 
-  const packet = new packetClass(connectionUid);
+  const packet = new packetClass();
 
   const encodedData = socket.read(length - 1);
 
@@ -62,7 +62,9 @@ export function socketListener(connectionUid: string, socket: Socket) {
       decoded[i] = decoded[i] ^ maskKey[(i + 1) % 4];
     }
 
-    packet.read(new ServerBufferInput(decoded));
+    console.log(decoded.toString("utf-8"));
+    
+    packet.read(new BufferStream(decoded));
   }
 
   console.log(packet);
