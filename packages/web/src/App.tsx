@@ -27,7 +27,7 @@ function handleShakeScreenClick() {}
 const App: Component = () => {
   return (
     <div>
-      <textarea id="textbox" cols="30" rows="10"></textarea>
+      <textarea id="textbox" cols="30" rows="10" class="shadow"></textarea>
       <button onclick={handleSendMessageClick}>Enviar 📨</button>
       <button onclick={handleShakeScreenClick}>Chamar atenção</button>
     </div>
