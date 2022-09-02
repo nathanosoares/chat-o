@@ -4,6 +4,7 @@ import {
   Component,
   createMemo,
   createSignal,
+  For,
   onMount,
   Show,
   useContext,
@@ -81,11 +82,16 @@ const App: Component = () => {
               <ChatListItem />
               <ChatListItem />
             </div>
-            <div class="bg-slate-600 grow flex flex-col">
-              <div class="grow flex p-8">
-                <div class="grow flex flex-col justify-end">
+            <div class="bg-slate-600 w-full flex flex-col justify-end">
+              <div class="flex-[1_1_0] w-full relative min-h-0">
+                <div class="overflow-y-scroll p-8 max-h-full h-full flex flex-col-reverse">
                   <div class="chat-messages left">
-                    <ChatMessageItem />
+                    <For
+                      each={Array.from(Array(15).keys())}
+                      fallback={<div>Loading...</div>}
+                    >
+                      {() => <ChatMessageItem />}
+                    </For>
                   </div>
                   <div class="chat-messages right">
                     <ChatMessageItem />
@@ -98,7 +104,8 @@ const App: Component = () => {
                 </div>
               </div>
 
-              <div class="flex grow-0 w-full p-4 bg-slate-400">
+              {/* <div class="flex shrink-0 w-full p-4 bg-slate-400"> */}
+              <div class="p-4 bg-slate-400 flex shrink-0">
                 <div class="grow p-2 rounded bg-white">
                   <div
                     class="w-full outline-0 max-h-32 overflow-y-scroll whitespace-pre-wrap break-all"

@@ -25,7 +25,7 @@ export async function upgradeConnectionHandle(
   request: IncomingMessage,
   socket: Socket
 ) {
-  // await new Promise((resolve) => setTimeout(resolve, 500));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const { "sec-websocket-key": webClientSocketKey } = request.headers;
 

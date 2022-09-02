@@ -21,7 +21,6 @@ export const SocketContext = createContext<ISocketContextValue>({
     socket.onopen = (event) => {
       console.log("Connected!", event);
       setSocketStore("connected", true);
-      
     };
     socket.onmessage = (message) => console.log("Message", message);
     socket.onerror = (error) => console.error(`Error`, error);
