@@ -1,6 +1,7 @@
 import {
   ClientBoundPacketHandler,
   SendMessageClientBoundPacket,
+  ShakeScreenClientBoundPacket,
 } from "@chat-o/common";
 
 export default class SendMessageListener {

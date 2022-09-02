@@ -21,7 +21,12 @@ export function startServer(port: number = 25665): Server {
   return server;
 }
 
-export function upgradeConnectionHandle(request: IncomingMessage, socket: Socket) {
+export async function upgradeConnectionHandle(
+  request: IncomingMessage,
+  socket: Socket
+) {
+  // await new Promise((resolve) => setTimeout(resolve, 500));
+
   const { "sec-websocket-key": webClientSocketKey } = request.headers;
 
   const sha1 = createHash("sha1");
