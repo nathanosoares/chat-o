@@ -1,37 +1,12 @@
-import { SendMessageClientBoundPacket } from "@chat-o/common";
-import { BufferStream } from "buffer-stream-js";
 import {
   Component,
-  createMemo,
   createSignal,
   For,
   onMount,
   Show,
   useContext,
 } from "solid-js";
-import { SocketContext, socketStore } from "./net/socket-contexts";
-
-// const socket = new WebSocket(`ws://localhost:8080/`);
-
-// socket.onopen = (event) => console.log("Connected!", event);
-// socket.onmessage = (message) => console.log("message", message);
-// socket.onerror = (error) => console.error("Error", error);
-// socket.onclose = (event) => console.log("Disconnected!", event);
-
-// function handleSendMessageClick() {
-//   const packet = new SendMessageClientBoundPacket(
-//     "20f72bf7-0f7f-40fa-968c-11ce3cc13d92",
-//     "Olá"
-//   );
-
-//   const buffer = BufferStream.alloc(512);
-//   buffer.writeUInt(0x1);
-//   packet.write(buffer);
-
-//   socket.send(buffer.getLeftBuffer());
-// }
-
-// function handleShakeScreenClick() {}
+import { SocketContext } from "./net/socket-contexts";
 
 const ChatListItem: Component = (props) => {
   const socketContext = useContext(SocketContext);
@@ -112,13 +87,13 @@ const App: Component = () => {
                     contentEditable={true}
                     role={"textbox"}
                     spellcheck={true}
-                    onInput={(e) => {
-                      setMessage(
-                        [...e.target.childNodes.values()]
-                          .map((node) => node.textContent)
-                          .join("\n")
-                      );
-                    }}
+                    // onInput={(e) => {
+                    //   setMessage(
+                    //     [...e.target.childNodes.values()]
+                    //       .map((node) => node.textContent)
+                    //       .join("\n")
+                    //   );
+                    // }}
                   ></div>
                 </div>
 

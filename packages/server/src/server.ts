@@ -5,26 +5,17 @@ import { readFileSync } from "fs";
 
 const WEBSOCKET_MAGIC_STRING_KEY = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
-const html = readFileSync("./src/index.html");
-
 export function startServer(port: number = 25665): Server {
-  const server = createServer(
-    (_request: IncomingMessage, response: ServerResponse) => {
-      response.writeHead(200, { "Content-Type": "text/html" });
-      response.write(html);
-      response.end();
-    }
-  );
+  const server = createServer((_request: IncomingMessage, response: ServerResponse) => {
+    response.end();
+  });
 
   server.listen(port, () => console.log(`Server running on port ${port}`));
 
   return server;
 }
 
-export async function upgradeConnectionHandle(
-  request: IncomingMessage,
-  socket: Socket
-) {
+export async function upgradeConnectionHandle(request: IncomingMessage, socket: Socket) {
   // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const { "sec-websocket-key": webClientSocketKey } = request.headers;
