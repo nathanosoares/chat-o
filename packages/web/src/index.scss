@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.chat-messages {
+  div:first-child {
+    @apply mt-3;
+  }
+
+  &.left div {
+    @apply bg-slate-50 md:mr-20 mr-0;
+
+    &:first-child {
+      @apply rounded-tl-none;
+      &::after {
+        @apply border-slate-50 -left-[12px];
+        border-left: 12px solid transparent;
+      }
+    }
+  }
+
+  &.right div {
+    @apply bg-slate-300 md:ml-20 ml-0;
+
+    &:first-child {
+      @apply rounded-tr-none;
+      &::after {
+        @apply border-slate-300 -right-[12px];
+        border-right: 12px solid transparent;
+      }
+    }
+  }
+
+  div:first-child {
+    &::after {
+      content: " ";
+      @apply w-0 h-0 absolute top-0 border-t-[12px];
+    }
+  }
+}

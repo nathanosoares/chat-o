@@ -2,16 +2,18 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "es5",
+    "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"],
+    "types": ["vite/client", "reflect-metadata"],
     "noEmit": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   },
   "references": [{ "path": "../common" }]
 }

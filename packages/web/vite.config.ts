@@ -10,6 +10,7 @@ export default defineConfig({
     target: "esnext",
   },
   optimizeDeps: {
+    force: true,
     include: ["@chat-o/common"],
   },
 });

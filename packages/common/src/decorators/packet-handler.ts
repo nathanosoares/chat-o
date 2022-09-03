@@ -1,62 +1,28 @@
 import "reflect-metadata";
-import { ClientBoundPacket } from "../net";
+import { Packet } from "../net";
 
-export const ClientBoundPacketHandler = (): MethodDecorator => {
+export const PacketHandler = (packetType?: any): MethodDecorator => {
   return (
     target: Object,
     propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>
+    _descriptor: TypedPropertyDescriptor<any>
   ) => {
-    var paramtypes = Reflect.getMetadata(
-      "design:paramtypes",
-      target,
-      propertyKey
-    );
-
-    if (paramtypes?.length != 2) {
-      throw new Error("Invalid packet handler paramenters.");
-    }
-
-    if (paramtypes[0] != String) {
-      throw new Error(
-        "First paramenter need be a type string to receive connectionUid."
+    if (!packetType) {
+      var paramtypes = Reflect.getMetadata(
+        "design:paramtypes",
+        target,
+        propertyKey
       );
+
+      if (paramtypes?.length != 1) {
+        throw new Error(`Invalid packet handler paramenters.`);
+      }
+
+      packetType = paramtypes[0];
     }
 
-    const packetType = paramtypes[1];
-
-    if (!(packetType.prototype instanceof ClientBoundPacket)) {
-      throw new Error(
-        "Second paramenter need be a type that extends ClientBoundPacket."
-      );
-    }
-
-    Reflect.defineMetadata("packet_handler", packetType, target, propertyKey);
-  };
-};
-
-export const ServerBoundPacketHandler = (): MethodDecorator => {
-  return (
-    target: Object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>
-  ) => {
-    var paramtypes = Reflect.getMetadata(
-      "design:paramtypes",
-      target,
-      propertyKey
-    );
-
-    if (paramtypes?.length != 1) {
-      throw new Error("Invalid packet handler paramenters.");
-    }
-
-    const packetType = paramtypes[0];
-
-    if (!(packetType.prototype instanceof ServerBoundPacketHandler)) {
-      throw new Error(
-        "Second paramenter need be a type that extends ServerBoundPacketHandler."
-      );
+    if (!(packetType.prototype instanceof Packet)) {
+      throw new Error("Second paramenter need be a type that extends Packet.");
     }
 
     Reflect.defineMetadata("packet_handler", packetType, target, propertyKey);

@@ -2,7 +2,7 @@
   "name": "chat-o",
   "version": "1.0.0",
   "scripts": {
-    "compile": "tsc -b tsconfig.build.json",
+    "compile": "npm run tsc --workspaces --if-present",
     "start:server": "npm run start --workspace=@chat-o/server",
     "start:web": "npm run start --workspace=@chat-o/web"
   },
@@ -13,7 +13,6 @@
     "@types/node": "^18.7.14",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "server": "^1.0.37",
     "typescript": "^4.8.2"
   },
   "dependencies": {
