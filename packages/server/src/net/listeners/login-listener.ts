@@ -1,5 +1,6 @@
 import { ConnectionState, LoginServerboundPacket, PacketHandler, PacketListener } from "@chat-o/common";
 import ClientPacketListener from "../client-packet-listener";
+import PreparingMessagesListener from "./preparing-messages";
 
 export default class LoginListener extends ClientPacketListener {
   @PacketHandler()
@@ -11,6 +12,7 @@ export default class LoginListener extends ClientPacketListener {
     this.connection.username = packet.username;
 
     this.connection.unregisterLister(this);
+    this.connection.registerListener(new PreparingMessagesListener(this.connection));
 
     this.connection.setState(ConnectionState.PREPARING_MESSAGES);
   }

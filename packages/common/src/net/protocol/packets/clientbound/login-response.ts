@@ -1,7 +1,7 @@
 import { BufferStream } from "buffer-stream-js";
 import { ServerboundPacket } from "../serverbound-packet";
 
-export class LoginResponseServerboundPacket extends ServerboundPacket {
+export class LoginResponseClientboundPacket extends ServerboundPacket {
   uid: string | undefined;
 
   constructor(uid?: string) {

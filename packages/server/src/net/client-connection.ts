@@ -1,4 +1,4 @@
-import { Connection, ConnectionState, ConnectionStateServerboundPacket, Packet } from "@chat-o/common";
+import { Connection, ConnectionState, ConnectionStateClientboundPacket, Packet } from "@chat-o/common";
 import { BufferStream } from "buffer-stream-js";
 import { Socket } from "net";
 import Application from "../application";
@@ -29,7 +29,7 @@ export default class ClientConnection extends Connection {
 
     const buffer = bufferStream.getLeftBuffer();
     const bufferSize = buffer.length;
-
+    
     let frame: Buffer;
     const firstByte = 0x80 | Opcode.BINARY_FRAME;
     if (bufferSize <= 125) {
@@ -70,7 +70,7 @@ export default class ClientConnection extends Connection {
 
   setState(state: ConnectionState) {
     this._state = state;
-    this.sendPacket(new ConnectionStateServerboundPacket(this._state));
+    this.sendPacket(new ConnectionStateClientboundPacket(this._state));
   }
 
   getState(): ConnectionState {

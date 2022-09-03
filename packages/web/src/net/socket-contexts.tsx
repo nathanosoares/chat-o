@@ -36,18 +36,17 @@ class SocketContextValue {
     const socket = new WebSocket(`ws://localhost:8080`);
 
     socket.onopen = (event) => {
-      console.log("Connected!", event);
+      console.log("Connected!");
 
       const connection = new ServerConnection(socket, application);
 
       connection.registerListener(new ConnectionStateListener(connection));
-      connection.sendPacket(new HandshakeServerboundPacket());
 
       socket.onmessage = async (message) => {
         const buffer = await message.data.arrayBuffer();
         const bufferStream = new BufferStream(buffer);
 
-        const packetId = bufferStream.readUInt();
+        const packetId = bufferStream.readUInt8();
         const packetClass = packetManager.getPacketById(packetId);
         if (!packetClass) return;
 
@@ -56,6 +55,8 @@ class SocketContextValue {
 
         connection.queuePacket(packet);
       };
+
+      connection.sendPacket(new HandshakeServerboundPacket());
 
       setSocketStore("connected", true);
     };

@@ -1,5 +1,6 @@
 import { ConnectionState, HandshakeServerboundPacket, PacketHandler } from "@chat-o/common";
 import ClientPacketListener from "../client-packet-listener";
+import LoginListener from "./login-listener";
 
 export default class HandshakeListener extends ClientPacketListener {
   @PacketHandler()
@@ -9,6 +10,7 @@ export default class HandshakeListener extends ClientPacketListener {
     }
 
     this.connection.unregisterLister(this);
+    this.connection.registerListener(new LoginListener(this.connection));
 
     this.connection.setState(ConnectionState.HANDSHAKE);
   }

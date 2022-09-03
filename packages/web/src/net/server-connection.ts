@@ -34,20 +34,20 @@ export default class ServerConnection extends Connection {
   }
 
   queuePacket(packet: Packet) {
-    // for (const listener of this.listeners.values()) {
-    //   for (const methodName of Reflect.ownKeys(
-    //     Object.getPrototypeOf(listener)
-    //   )) {
-    //     const handler = Reflect.getMetadata(
-    //       "packet_handler",
-    //       listener,
-    //       methodName
-    //     );
-    //     if (packet.constructor === handler) {
-    //       (listener as any)[methodName](packet);
-    //     }
-    //   }
-    // }
+    for (const listener of this.listeners.values()) {
+      for (const methodName of Reflect.ownKeys(
+        Object.getPrototypeOf(listener)
+      )) {
+        const handler = Reflect.getMetadata(
+          "packet_handler",
+          listener,
+          methodName
+        );
+        if (packet.constructor === handler) {
+          (listener as any)[methodName](packet);
+        }
+      }
+    }
   }
 
   registerListener(listener: PacketListener<any>) {

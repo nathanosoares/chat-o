@@ -2,7 +2,7 @@ import { BufferStream } from "buffer-stream-js";
 import { ConnectionState } from "../../../connection-state";
 import { ServerboundPacket } from "../serverbound-packet";
 
-export class ConnectionStateServerboundPacket extends ServerboundPacket {
+export class ConnectionStateClientboundPacket extends ServerboundPacket {
   state: ConnectionState | undefined;
 
   constructor(state?: ConnectionState) {
