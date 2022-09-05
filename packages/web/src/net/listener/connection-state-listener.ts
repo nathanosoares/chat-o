@@ -3,13 +3,12 @@ import {
   ConnectionStateClientboundPacket,
   LoginServerboundPacket,
   PacketHandler,
-  PacketListener,
   PrepareMessagesRequestServerboundPacket,
 } from "@chat-o/common";
-import ServerConnection from "../server-connection";
 import PrepareMessagesListener from "./prepare-messages-listener";
+import ServerPacketListener from "../server-packet-listener";
 
-export default class ConnectionStateListener extends PacketListener<ServerConnection> {
+export default class ConnectionStateListener extends ServerPacketListener {
   @PacketHandler(ConnectionStateClientboundPacket)
   on(packet: ConnectionStateClientboundPacket) {
     if (packet.state == undefined) {
@@ -25,7 +24,7 @@ export default class ConnectionStateListener extends PacketListener<ServerConnec
       }
       case ConnectionState.PREPARING_MESSAGES: {
         this.connection.registerListener(
-          new PrepareMessagesListener(this.connection)
+          new PrepareMessagesListener(this.application, this.connection)
         );
         this.connection.sendPacket(
           new PrepareMessagesRequestServerboundPacket()

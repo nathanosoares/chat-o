@@ -2,21 +2,18 @@ import { PacketManager } from "@chat-o/common";
 import { randomUUID } from "crypto";
 import { IncomingMessage } from "http";
 import { Socket } from "net";
-import Application from "./application";
+import ServerApplication from "./server-application";
 import HandshakeListener from "./net/listeners/handshake-listener";
 import ClientConnection from "./net/client-connection";
-import { startServer, upgradeConnectionHandle } from "./server";
 import { socketListener } from "./socket-listener";
 
-const packetManager = new PacketManager();
-const server = startServer(8080);
-
-const application = new Application(server, packetManager);
+const application = new ServerApplication(new PacketManager());
 
 application.bootstrap();
+const http = application.listen(8080);
 
-server.on("upgrade", (req: IncomingMessage, socket: Socket) => {
-  upgradeConnectionHandle(req, socket);
+http.server?.on("upgrade", (req: IncomingMessage, socket: Socket) => {
+  http.acceptUpgradeConnection(req, socket);
 
   const connectionUid = randomUUID();
 
@@ -24,10 +21,10 @@ server.on("upgrade", (req: IncomingMessage, socket: Socket) => {
 
   const connection = new ClientConnection(connectionUid, socket, application);
 
-  connection.registerListener(new HandshakeListener(connection));
+  connection.registerListener(new HandshakeListener(application, connection));
 
   socket.on("readable", () => {
-    socketListener(packetManager, connection);
+    socketListener(application.packetManager, connection);
     socket.read();
   });
 });

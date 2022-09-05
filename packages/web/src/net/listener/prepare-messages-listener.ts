@@ -5,12 +5,11 @@ import {
   PrepareMessagesReadyServerboundPacket,
   PrepareMessagesSnapshotClientboundPacket,
 } from "@chat-o/common";
-import ServerConnection from "../server-connection";
+import ServerPacketListener from "../server-packet-listener";
 
-export default class PrepareMessagesListener extends PacketListener<ServerConnection> {
+export default class PrepareMessagesListener extends ServerPacketListener {
   @PacketHandler(PrepareMessagesFinishClientboundPacket)
-  onSnapshot(packet: PrepareMessagesSnapshotClientboundPacket) {
-  }
+  onSnapshot(packet: PrepareMessagesSnapshotClientboundPacket) {}
 
   @PacketHandler(PrepareMessagesFinishClientboundPacket)
   onFinish(packet: PrepareMessagesFinishClientboundPacket) {

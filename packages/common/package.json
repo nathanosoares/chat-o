@@ -4,7 +4,7 @@
   "main": "target/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "rimraf target && tsc"
+    "compile": "rimraf target && rimraf tsconfig.tsbuildinfo && tsc"
   },
   "types": "target/index.d.ts"
 }

@@ -1,6 +1,7 @@
 import {
   ConnectionStateClientboundPacket,
   HandshakeServerboundPacket,
+  LoginResponseClientboundPacket,
   LoginServerboundPacket,
   PacketManager,
   PrepareMessagesFinishClientboundPacket,
@@ -10,17 +11,18 @@ import {
 } from "./net";
 
 export class CommonApplication {
-  constructor(readonly packetManger: PacketManager) {}
+  constructor(readonly packetManager: PacketManager) {}
 
   bootstrap() {
-    this.packetManger.registerPacket(0x01, HandshakeServerboundPacket);
-    this.packetManger.registerPacket(0x02, LoginServerboundPacket);
-    this.packetManger.registerPacket(0x03, PrepareMessagesRequestServerboundPacket);
-    this.packetManger.registerPacket(0x04, PrepareMessagesReadyServerboundPacket);
-    this.packetManger.registerPacket(0x05, ConnectionStateClientboundPacket);
+    this.packetManager.registerPacket(0x01, HandshakeServerboundPacket);
+    this.packetManager.registerPacket(0x02, LoginServerboundPacket);
+    this.packetManager.registerPacket(0x03, PrepareMessagesRequestServerboundPacket);
+    this.packetManager.registerPacket(0x04, PrepareMessagesReadyServerboundPacket);
 
-    this.packetManger.registerPacket(0x80, LoginServerboundPacket);
-    this.packetManger.registerPacket(0x81, PrepareMessagesSnapshotClientboundPacket);
-    this.packetManger.registerPacket(0x82, PrepareMessagesFinishClientboundPacket);
+    
+    this.packetManager.registerPacket(0x80, LoginResponseClientboundPacket);
+    this.packetManager.registerPacket(0x81, PrepareMessagesSnapshotClientboundPacket);
+    this.packetManager.registerPacket(0x82, PrepareMessagesFinishClientboundPacket);
+    this.packetManager.registerPacket(0x83, ConnectionStateClientboundPacket);
   }
 }

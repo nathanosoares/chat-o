@@ -2,7 +2,7 @@
   "name": "chat-o",
   "version": "1.0.0",
   "scripts": {
-    "compile": "npm run tsc --workspaces --if-present",
+    "compile": "npm run compile --workspaces --if-present",
     "start:server": "npm run start --workspace=@chat-o/server",
     "start:web": "npm run start --workspace=@chat-o/web"
   },

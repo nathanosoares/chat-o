@@ -7,6 +7,7 @@ import { BufferStream } from "buffer-stream-js";
 import { createContext } from "solid-js";
 import { createStore, SetStoreFunction } from "solid-js/store";
 import ConnectionStateListener from "./listener/connection-state-listener";
+import LoginListener from "./listener/login-listener";
 import ServerConnection from "./server-connection";
 
 class SocketStore {
@@ -40,7 +41,8 @@ class SocketContextValue {
 
       const connection = new ServerConnection(socket, application);
 
-      connection.registerListener(new ConnectionStateListener(connection));
+      connection.registerListener(new LoginListener(application, connection));
+      connection.registerListener(new ConnectionStateListener(application, connection));
 
       socket.onmessage = async (message) => {
         const buffer = await message.data.arrayBuffer();

@@ -14,7 +14,7 @@ export abstract class Connection {
 
   abstract queuePacket(packet: Packet): void;
 
-  abstract registerListener<T extends PacketListener<any>>(listener: T): void;
+  abstract registerListener<T extends PacketListener<any, any>>(listener: T): void;
 
-  abstract unregisterLister(listener: PacketListener<any>): void;
+  abstract unregisterLister(listener: PacketListener<any, any>): void;
 }

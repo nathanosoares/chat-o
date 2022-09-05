@@ -1,7 +1,7 @@
 import { Connection, ConnectionState, ConnectionStateClientboundPacket, Packet } from "@chat-o/common";
 import { BufferStream } from "buffer-stream-js";
 import { Socket } from "net";
-import Application from "../application";
+import ServerApplication from "../server-application";
 import ClientPacketListener from "./client-packet-listener";
 import Opcode from "./enum/opcode";
 
@@ -10,14 +10,12 @@ export default class ClientConnection extends Connection {
 
   private _state: ConnectionState = ConnectionState.DISCONNECTED;
 
-  username: string | undefined;
-
-  constructor(readonly uid: string, readonly socket: Socket, application: Application) {
+  constructor(readonly uid: string, readonly socket: Socket, application: ServerApplication) {
     super(application);
   }
 
   sendPacket(packet: Packet) {
-    const packetId = this.application.packetManger.getPacketByType((packet as any).constructor);
+    const packetId = this.application.packetManager.getPacketByType((packet as any).constructor);
 
     if (!packetId) {
       throw Error(`Unknow packet: ${packet}`);

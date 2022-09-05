@@ -2,7 +2,6 @@ import {
   CommonApplication,
   Connection,
   ConnectionState,
-  HandshakeServerboundPacket,
   Packet,
   PacketListener,
 } from "@chat-o/common";
@@ -19,7 +18,7 @@ export default class ServerConnection extends Connection {
   }
 
   sendPacket(packet: Packet): void {
-    const packetId = this.application.packetManger.getPacketByType(
+    const packetId = this.application.packetManager.getPacketByType(
       (packet as any).constructor
     );
 
@@ -50,12 +49,12 @@ export default class ServerConnection extends Connection {
     }
   }
 
-  registerListener(listener: PacketListener<any>) {
+  registerListener(listener: PacketListener<any, any>) {
     this.unregisterLister(listener);
     this.listeners.set(listener.constructor, listener);
   }
 
-  unregisterLister(listener: PacketListener<any>) {
+  unregisterLister(listener: PacketListener<any, any>) {
     this.listeners.delete(listener.constructor);
   }
 
