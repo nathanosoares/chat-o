@@ -19,21 +19,26 @@ export default class Http {
 
   startHttpServer(port: number = 8080) {
     const app = express();
-    app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     app.get("/", function (request, response) {
-      response.send("Simple WhatsApp Webhook tester</br>There is no front-end, see server.js for implementation!");
+      response.send("Index");
     });
 
-    app.get("/webhook", function (request, response) {
-      console.log("Incoming webhook: " + JSON.stringify(request.body));
+    app.all("/webhook", function (request, response) {
+      console.log(request.body);
+
+      if (request.method === "GET" && request.query["hub.mode"] === "subscribe") {
+        response.send(request.query["hub.challenge"]);
+      }
+
       response.sendStatus(200);
     });
 
     this._server = app.listen(port, () => console.log(`Server running on port ${port}`));
   }
-  
+
   acceptUpgradeConnection(request: IncomingMessage, socket: Socket) {
     // await new Promise((resolve) => setTimeout(resolve, 2000));
 
