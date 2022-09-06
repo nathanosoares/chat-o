@@ -3,6 +3,7 @@ import {
   PrepareMessagesFinishClientboundPacket,
   PrepareMessagesReadyServerboundPacket,
   PrepareMessagesRequestServerboundPacket,
+  PrepareMessagesSnapshotClientboundPacket,
 } from "@chat-o/common";
 import { ConnectionState } from "@chat-o/common";
 import ClientPacketListener from "../client-packet-listener";
@@ -14,7 +15,12 @@ export default class PreparingMessagesListener extends ClientPacketListener {
       return;
     }
 
-    // todo enviar mensagens
+    const messages = [];
+    for (let i = 0; i < 10; i++) {
+      messages.push(`${i} - Duis elit excepteur laboris amet esse in id sit non deserunt nostrud.`);
+    }
+
+    this.connection.sendPacket(new PrepareMessagesSnapshotClientboundPacket(messages));
 
     this.connection.sendPacket(new PrepareMessagesFinishClientboundPacket());
   }

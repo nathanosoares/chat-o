@@ -1,5 +1,4 @@
 import { CommonApplication, PacketManager } from "@chat-o/common";
-import { Server } from "http";
 import Person from "./domain/person";
 import Http from "./http";
 
