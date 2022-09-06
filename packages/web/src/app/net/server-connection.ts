@@ -6,7 +6,6 @@ import {
   PacketListener,
 } from "@chat-o/common";
 import { BufferStream } from "buffer-stream-js";
-// import ServerPacketListener from "./server-packet-listener";
 
 export default class ServerConnection extends Connection {
   private listeners: Map<any, Object> = new Map();
