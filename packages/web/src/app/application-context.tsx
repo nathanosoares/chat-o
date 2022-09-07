@@ -1,5 +1,5 @@
 import { createContext, ParentComponent, ParentProps } from "solid-js";
-import WebApplication from "./app/web-application";
+import WebApplication from "./web-application";
 
 export const AppContext = createContext<WebApplication | null>(null);
 

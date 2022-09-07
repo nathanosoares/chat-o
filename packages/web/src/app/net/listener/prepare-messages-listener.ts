@@ -1,6 +1,5 @@
 import {
   PacketHandler,
-  PacketListener,
   PrepareMessagesFinishClientboundPacket,
   PrepareMessagesReadyServerboundPacket,
   PrepareMessagesSnapshotClientboundPacket,
@@ -8,8 +7,10 @@ import {
 import ServerPacketListener from "../server-packet-listener";
 
 export default class PrepareMessagesListener extends ServerPacketListener {
-  @PacketHandler(PrepareMessagesFinishClientboundPacket)
-  onSnapshot(packet: PrepareMessagesSnapshotClientboundPacket) {}
+  @PacketHandler(PrepareMessagesSnapshotClientboundPacket)
+  onSnapshot(packet: PrepareMessagesSnapshotClientboundPacket) {
+    this.application.addMessages(...packet.messages);
+  }
 
   @PacketHandler(PrepareMessagesFinishClientboundPacket)
   onFinish(packet: PrepareMessagesFinishClientboundPacket) {

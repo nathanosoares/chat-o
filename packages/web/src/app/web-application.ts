@@ -1,4 +1,4 @@
-import { CommonApplication, HandshakeServerboundPacket, PacketManager } from "@chat-o/common";
+import { CommonApplication, HandshakeServerboundPacket, Message, PacketManager } from "@chat-o/common";
 import { BufferStream } from "buffer-stream-js";
 import { createStore, SetStoreFunction } from "solid-js/store";
 import ConnectionStateListener from "./net/listener/connection-state-listener";
@@ -6,12 +6,13 @@ import LoginListener from "./net/listener/login-listener";
 import ServerConnection from "./net/server-connection";
 
 interface Store {
-  messages: string[];
+  messages: Message[];
   connected: boolean;
 }
 
 export default class WebApplication extends CommonApplication {
   socket?: WebSocket;
+  clientUid?: string;
 
   private _store: Store;
   private _setStore: SetStoreFunction<Store>;
@@ -30,7 +31,7 @@ export default class WebApplication extends CommonApplication {
 
     this.socket = new WebSocket(`ws://localhost:8080`);
 
-    this.socket.addEventListener("open", (event) => {
+    this.socket.addEventListener("open", () => {
       if (!this.socket) return;
 
       console.log("Connected!");
@@ -64,7 +65,11 @@ export default class WebApplication extends CommonApplication {
     return this._store.connected;
   }
 
-  get messages(): string[] {
+  get messages(): Message[] {
     return this._store.messages;
+  }
+
+  addMessages(...messages: Message[]) {
+    this._setStore("messages", (prev) => [...prev,...messages]);
   }
 }
