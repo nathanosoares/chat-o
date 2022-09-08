@@ -19,7 +19,7 @@ export default class ConnectionStateListener extends ServerPacketListener {
 
     switch (this.connection.getState()) {
       case ConnectionState.HANDSHAKE: {
-        this.connection.sendPacket(new LoginServerboundPacket());
+        this.connection.sendPacket(new LoginServerboundPacket("username"));
         break;
       }
       case ConnectionState.PREPARING_MESSAGES: {

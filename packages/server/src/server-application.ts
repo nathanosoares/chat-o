@@ -1,21 +1,18 @@
 import { CommonApplication, PacketManager } from "@chat-o/common";
 import Person from "./domain/person";
-import Http from "./http";
-
+import { Socket } from "./socket";
 export default class ServerApplication extends CommonApplication {
   private persons: Set<Person> = new Set();
 
-  private http: Http | undefined;
+  readonly socket: Socket;
 
-  constructor(packetManger: PacketManager) {
+  constructor(socketPort: number, packetManger: PacketManager) {
     super(packetManger);
+    this.socket = new Socket(socketPort, this);
   }
 
-  listen(port: number): Http {
-    this.http = new Http(this);
-    this.http.startHttpServer(port);
-
-    return this.http;
+  listen() {
+    this.socket.listen();
   }
 
   addPerson(person: Person): void {
