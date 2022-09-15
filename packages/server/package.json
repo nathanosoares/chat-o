@@ -13,8 +13,10 @@
     "ws": "^8.8.1"
   },
   "devDependencies": {
+    "@chat-o/server": "^1.0.0",
     "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.13",
+    "@types/node": "^18.7.18",
     "@types/ws": "^8.5.3",
     "nodemon": "^2.0.19",
     "ts-node": "^10.9.1"
